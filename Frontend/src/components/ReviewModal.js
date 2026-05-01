@@ -23,7 +23,7 @@ export default function ReviewModal({ appointment, hospitalId, onClose, onReview
       
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5001/api/reviews",
+        `${process.env.REACT_APP_API_BASE_URL}/api/reviews`,
         {
           hospitalId,
           appointmentId: appointment._id,

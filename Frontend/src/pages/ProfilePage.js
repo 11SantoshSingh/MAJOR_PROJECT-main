@@ -42,7 +42,7 @@ export default function ProfilePage() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5001/api/appointments/my-appointments", {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/my-appointments`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       if (response.data.appointments) {
@@ -50,7 +50,7 @@ export default function ProfilePage() {
           response.data.appointments.map(async (apt) => {
             try {
               const reviewResponse = await axios.get(
-                `http://localhost:5001/api/reviews/appointment/${apt._id}`,
+                `${process.env.REACT_APP_API_BASE_URL}/api/reviews/appointment/${apt._id}`,
                 {
                   headers: token ? { Authorization: `Bearer ${token}` } : {},
                 }
@@ -74,7 +74,7 @@ export default function ProfilePage() {
     try {
       setCancelLoading(appointmentId);
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5001/api/appointments/${appointmentId}/cancel`, {
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/${appointmentId}/cancel`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       setAppointments((prev) => prev.filter((apt) => apt.id !== appointmentId));
@@ -88,7 +88,7 @@ export default function ProfilePage() {
   const rescheduleAppointment = async (appointmentId, date, time) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:5001/api/appointments/${appointmentId}/reschedule`, { date, time }, {
+      await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/${appointmentId}/reschedule`, { date, time }, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       setAppointments((prev) => prev.map((apt) => (apt.id === appointmentId ? { ...apt, date, time, status: "rescheduled" } : apt)));

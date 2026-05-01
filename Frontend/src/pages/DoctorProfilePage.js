@@ -95,7 +95,7 @@ export default function DoctorProfilePage() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await axios.put("http://localhost:5001/api/doctors/profile", updateData, {
+      const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/doctors/profile`, updateData, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       if (response.data.doctor) {

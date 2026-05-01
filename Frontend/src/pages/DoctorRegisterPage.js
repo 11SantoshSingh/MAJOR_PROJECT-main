@@ -52,7 +52,7 @@ export default function DoctorRegisterPage() {
       try {
         setLoading(true);
         setError(null);
-        const response = await axios.post("http://localhost:5001/api/doctors/login", {
+        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/doctors/login`, {
           email: formData.email,
           password: formData.password,
         });
@@ -112,7 +112,7 @@ export default function DoctorRegisterPage() {
       try {
         setLoading(true);
         setError(null);
-        const response = await axios.post("http://localhost:5001/api/doctors/register", {
+        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/doctors/register`, {
           email: formData.email,
           password: formData.password,
           phone: formData.phone,

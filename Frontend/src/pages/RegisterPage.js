@@ -27,7 +27,7 @@ export default function RegisterPage() {
   const navigate = useNavigate();
 
   const registerPatient = async (userData) => {
-    const response = await axios.post("http://localhost:5001/api/patients/register", userData);
+    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/patients/register`, userData);
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userType", "patient");
@@ -37,7 +37,7 @@ export default function RegisterPage() {
   };
 
   const loginPatient = async (email, password) => {
-    const response = await axios.post("http://localhost:5001/api/patients/login", { email, password });
+    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/patients/login`, { email, password });
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userType", "patient");

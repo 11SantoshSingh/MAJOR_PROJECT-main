@@ -70,7 +70,7 @@ export default function ProfilePictureUpload({ currentPicture, onUploadSuccess }
       const token = localStorage.getItem("token");
       
       const response = await axios.post(
-        "http://localhost:5001/api/doctors/upload-profile-pic",
+        `${process.env.REACT_APP_API_BASE_URL}/api/doctors/upload-profile-pic`,
         formData,
         {
           headers: {
@@ -118,7 +118,7 @@ export default function ProfilePictureUpload({ currentPicture, onUploadSuccess }
       setLoading(true);
       const token = localStorage.getItem("token");
       
-      await axios.delete("http://localhost:5001/api/doctors/remove-profile-pic", {
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/doctors/remove-profile-pic`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -154,7 +154,7 @@ export default function ProfilePictureUpload({ currentPicture, onUploadSuccess }
         >
           {preview ? (
             <img 
-              src={preview.startsWith('http') ? preview : `http://localhost:5001${preview}`} 
+              src={preview.startsWith('http') ? preview : `${process.env.REACT_APP_API_BASE_URL}${preview}`} 
               alt="Profile" 
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
             />

@@ -44,7 +44,7 @@ export default function HospitalAppointmentsPage() {
         return;
       }
       
-      const response = await axios.get("http://localhost:5001/api/appointments/hospital", {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/hospital`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -66,7 +66,7 @@ export default function HospitalAppointmentsPage() {
       setLoading(true);
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:5001/api/appointments/${appointmentId}/complete`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/appointments/${appointmentId}/complete`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -89,7 +89,7 @@ export default function HospitalAppointmentsPage() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5001/api/appointments/${appointmentId}/cancel`, {
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/${appointmentId}/cancel`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccess("Appointment cancelled!");

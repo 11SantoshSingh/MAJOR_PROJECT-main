@@ -98,7 +98,7 @@ export default function UploadPage() {
 
     try {
       setUploading(true);
-      const resp = await axios.post("http://localhost:5000/predict", form, {
+      const resp = await axios.post(`${process.env.REACT_APP_ML_API_URL}/predict`, form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setResult(resp.data);

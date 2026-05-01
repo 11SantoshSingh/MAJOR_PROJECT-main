@@ -24,7 +24,7 @@ function PaymentModal({ appointment, amount, onClose, onSuccess }) {
 
       // Create Razorpay order
       const orderResponse = await axios.post(
-        'http://localhost:5001/api/payments/create-order',
+        `${process.env.REACT_APP_API_BASE_URL}/api/payments/create-order`,
         {
           appointmentId: appointment._id,
           amount: amount
@@ -53,7 +53,7 @@ function PaymentModal({ appointment, amount, onClose, onSuccess }) {
           // Verify payment
           try {
             const verifyResponse = await axios.post(
-              'http://localhost:5001/api/payments/verify-payment',
+              `${process.env.REACT_APP_API_BASE_URL}/api/payments/verify-payment`,
               {
                 orderId: response.razorpay_order_id,
                 paymentId: response.razorpay_payment_id,
@@ -96,7 +96,7 @@ function PaymentModal({ appointment, amount, onClose, onSuccess }) {
       const token = localStorage.getItem('token');
 
       const response = await axios.post(
-        'http://localhost:5001/api/payments/cash-payment',
+        `${process.env.REACT_APP_API_BASE_URL}/api/payments/cash-payment`,
         {
           appointmentId: appointment._id,
           amount: amount

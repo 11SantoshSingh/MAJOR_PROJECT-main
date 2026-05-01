@@ -64,7 +64,7 @@ export default function BookAppointmentPage() {
     const fetchHospitals = async () => {
       try {
         setHospitalsLoading(true);
-        const response = await axios.get("http://localhost:5001/api/doctors/");
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/doctors/`);
         let list = [];
         if (Array.isArray(response.data)) {
           list = response.data;
@@ -87,7 +87,7 @@ export default function BookAppointmentPage() {
     const pricesMap = {};
     for (const hospital of hospitalsList) {
       try {
-        const response = await axios.get(`http://localhost:5001/api/prices/hospital/${hospital._id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/prices/hospital/${hospital._id}`);
         const prices = response.data.prices;
         const priceObj = {};
         prices.forEach(price => {
@@ -104,7 +104,7 @@ export default function BookAppointmentPage() {
   const fetchHospitalReviews = async (hospitalId) => {
     try {
       setReviewsLoading(true);
-      const response = await axios.get(`http://localhost:5001/api/reviews/hospital/${hospitalId}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/reviews/hospital/${hospitalId}`);
       setHospitalReviews(response.data.reviews || []);
     } catch (err) {
       console.error("Failed to fetch reviews:", err);
@@ -131,7 +131,7 @@ export default function BookAppointmentPage() {
       if (!selectedHospital || !formData.date || !formData.doctorSpecialty) return;
       try {
         const response = await axios.get(
-          `http://localhost:5001/api/appointments/availability?doctorId=${selectedHospital._id}&date=${formData.date}&specialty=${formData.doctorSpecialty}`
+          `${process.env.REACT_APP_API_BASE_URL}/api/appointments/availability?doctorId=${selectedHospital._id}&date=${formData.date}&specialty=${formData.doctorSpecialty}`
         );
         if (response.data.appointments) {
           setTakenTimes(response.data.appointments.map(a => a.time));
@@ -209,7 +209,7 @@ export default function BookAppointmentPage() {
         notes: formData.notes,
       };
 
-      const appointmentResponse = await axios.post("http://localhost:5001/api/appointments/", appointmentData, {
+      const appointmentResponse = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/`, appointmentData, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
@@ -411,7 +411,7 @@ export default function BookAppointmentPage() {
                           <div className="flex-shrink-0">
                             {h.profilePicture ? (
                               <img
-                                src={`http://localhost:5001${h.profilePicture}`}
+                                src={`${process.env.REACT_APP_API_BASE_URL}${h.profilePicture}`}
                                 alt={h.hospitalName}
                                 className="w-16 h-16 rounded-xl object-cover border-2 border-gray-200 group-hover:border-blue-400 transition-all"
                                 onError={(e) => {
@@ -485,7 +485,7 @@ export default function BookAppointmentPage() {
                   <div className="mb-3">
                     {selectedHospital.profilePicture ? (
                       <img
-                        src={`http://localhost:5001${selectedHospital.profilePicture}`}
+                        src={`${process.env.REACT_APP_API_BASE_URL}${selectedHospital.profilePicture}`}
                         alt={selectedHospital.hospitalName}
                         className="w-24 h-24 rounded-2xl object-cover border-4 border-white shadow-lg"
                         onError={(e) => {

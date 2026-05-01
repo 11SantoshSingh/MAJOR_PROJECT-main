@@ -49,7 +49,7 @@ export default function PriceManagement() {
         return;
       }
       
-      const response = await axios.get(`http://localhost:5001/api/prices/hospital/${hospitalId}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/prices/hospital/${hospitalId}`);
       setPrices(response.data.prices || []);
     } catch (err) {
       console.error("Failed to load prices:", err);
@@ -80,7 +80,7 @@ export default function PriceManagement() {
       }
       
       const response = await axios.post(
-        "http://localhost:5001/api/prices",
+        `${process.env.REACT_APP_API_BASE_URL}/api/prices`,
         { specialty, charges: parseInt(charges) },
         { headers: { Authorization: `Bearer ${token}` } }
       );

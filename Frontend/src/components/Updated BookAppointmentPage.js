@@ -54,7 +54,7 @@ export default function BookAppointmentPage() {
     const fetchHospitals = async () => {
       try {
         setHospitalsLoading(true);
-        const response = await axios.get("http://localhost:5001/api/doctors/");
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/doctors/`);
         
         let list = [];
         if (Array.isArray(response.data)) {
@@ -80,7 +80,7 @@ export default function BookAppointmentPage() {
     const pricesMap = {};
     for (const hospital of hospitalsList) {
       try {
-        const response = await axios.get(`http://localhost:5001/api/prices/hospital/${hospital._id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/prices/hospital/${hospital._id}`);
         const prices = response.data.prices;
         const priceObj = {};
         prices.forEach(price => {
@@ -104,7 +104,7 @@ export default function BookAppointmentPage() {
       if (!selectedHospital || !formData.date || !formData.doctorSpecialty) return;
       try {
         const response = await axios.get(
-          `http://localhost:5001/api/appointments/availability?doctorId=${selectedHospital._id}&date=${formData.date}&specialty=${formData.doctorSpecialty}`
+          `${process.env.REACT_APP_API_BASE_URL}/api/appointments/availability?doctorId=${selectedHospital._id}&date=${formData.date}&specialty=${formData.doctorSpecialty}`
         );
         if (response.data.appointments) {
           setTakenTimes(response.data.appointments.map(a => a.time));
@@ -157,7 +157,7 @@ export default function BookAppointmentPage() {
         notes: formData.notes,
       };
 
-      await axios.post("http://localhost:5001/api/appointments/", appointmentData, {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/`, appointmentData, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       
