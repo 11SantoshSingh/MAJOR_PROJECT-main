@@ -2,10 +2,9 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
-  CloudUpload, FileImage, AlertCircle, CheckCircle,
-  Activity, Battery, Heart, Loader2, Upload, X,
-  Scan, Microscope, Shield, TrendingUp, Sparkles,
-  Camera, Image, Clock, Award, Brain
+  CloudUpload, AlertCircle, CheckCircle,
+  Activity, Heart, Loader2, X,
+  Scan, Shield, Sparkles, Clock, Award, Brain
 } from "lucide-react";
 
 export default function UploadPage() {
