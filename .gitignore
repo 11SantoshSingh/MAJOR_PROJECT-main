@@ -1,0 +1,109 @@
+# =========================
+# Local editors
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Environment files
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv*/
+venv/
+env/
+ENV/
+
+# Python caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Packaging
+*.egg-info/
+build/
+dist/
+
+# =========================
+# ML / AI model artifacts
+# =========================
+*.h5
+*.keras
+*.pkl
+*.joblib
+*.pt
+*.pth
+*.onnx
+*.ckpt
+*.safetensors
+
+# Tensorflow / torch cache
+.cache/
+torch_cache/
+
+# =========================
+# Node.js
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# React / Vite build
+# =========================
+coverage/
+build/
+dist/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Database
+# =========================
+*.sqlite3
+*.db
+
+# =========================
+# Runtime uploads
+# =========================
+Backend2/uploads/
+
+# =========================
+# Temporary files
+# =========================
+tmp/
+temp/
+
+# =========================
+# Jupyter Notebook
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Misc
+# =========================
+*.zip
+*.tar.gz

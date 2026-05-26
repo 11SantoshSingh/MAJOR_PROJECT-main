@@ -1,3 +1,9 @@
-best_cnn_model.h5
+*.h5
+*.keras
+__pycache__/
+.venv/
 venv/
-.env/
+env/
+.env
+.env.*
+!.env.example

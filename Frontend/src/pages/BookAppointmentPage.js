@@ -5,8 +5,8 @@ import {
   Calendar, Clock, Search, MapPin, Star, DollarSign,
   ArrowLeft, CheckCircle, AlertCircle, Hospital,
   Stethoscope, FileText, ChevronRight, Filter, X,
-  TrendingUp, Shield, Award, Sparkles, Heart, Users,
-  CreditCard, Wallet
+  Shield, Award, Sparkles, Heart, Users,
+  CreditCard, TrendingUp
 } from "lucide-react";
 import PaymentModal from "../components/PaymentModal";
 

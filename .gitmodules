@@ -1,0 +1,3 @@
+[submodule "Medibot"]
+	path = Medibot
+	url = https://github.com/11SantoshSingh/Medibot.git

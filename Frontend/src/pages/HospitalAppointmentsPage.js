@@ -6,7 +6,7 @@ import {
   CheckCircle, XCircle, RefreshCw, Filter,
   TrendingUp, AlertCircle, Hospital, 
   Stethoscope, FileText, LogOut, 
-  ChevronRight, Star, Activity, Users
+  ChevronRight, Star, Activity
 } from "lucide-react";
 
 export default function HospitalAppointmentsPage() {

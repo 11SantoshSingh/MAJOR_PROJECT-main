@@ -4,7 +4,7 @@ import {
   Menu, X, Home, Calendar, User, LogOut, 
   Hospital, Settings, Stethoscope, Heart, 
   FileText, ClipboardList, Activity, Brain,
-  Sparkles, Shield, Star, Phone, Mail, MapPin
+  Sparkles, Shield, Star
 } from "lucide-react";
 
 export default function Navbar() {
@@ -113,6 +113,7 @@ export default function Navbar() {
 
               {isPatient ? (
                 <>
+                
                   <Link to="/book-appointment" className={navLinkClass("/book-appointment")}>
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />

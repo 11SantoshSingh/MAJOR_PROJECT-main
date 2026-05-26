@@ -3,7 +3,7 @@ import axios from "axios";
 import { 
   DollarSign, Edit2, Save, X, RefreshCw, 
   TrendingUp, AlertCircle, CheckCircle, 
-  CreditCard, Stethoscope, Plus, Trash2
+  CreditCard, Plus, Trash2
 } from "lucide-react";
 
 export default function PriceManagement() {

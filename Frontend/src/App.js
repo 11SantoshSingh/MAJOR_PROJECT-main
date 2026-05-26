@@ -9,6 +9,7 @@ import ProfilePage from "./pages/ProfilePage";
 import DoctorProfilePage from "./pages/DoctorProfilePage";
 import HospitalAppointmentsPage from "./pages/HospitalAppointmentsPage";
 import "./App.css";
+import ChatbotWidget from "./components/ChatbotWidget";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/doctor-profile" element={<DoctorProfilePage />} />
         <Route path="/hospital-appointments" element={<HospitalAppointmentsPage />} />
       </Routes>
+      <ChatbotWidget />
     </Router>
   );
 }

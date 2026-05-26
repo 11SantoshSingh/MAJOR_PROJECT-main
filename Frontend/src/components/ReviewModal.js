@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Star, X, Send, AlertCircle, CheckCircle, Calendar, Clock, Hospital, User } from "lucide-react";
+import { Star, X, Send, AlertCircle, CheckCircle, Calendar, Clock, Hospital } from "lucide-react";
 
 export default function ReviewModal({ appointment, hospitalId, onClose, onReviewSubmitted }) {
   const [rating, setRating] = useState(5);
