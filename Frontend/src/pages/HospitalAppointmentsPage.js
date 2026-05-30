@@ -140,13 +140,8 @@ export default function HospitalAppointmentsPage() {
   };
 
   useEffect(() => {
-    if (doctor && (doctor.id || doctor._id)) {
-      fetchAppointments();
-    } else {
-      setLoading(false);
-      setError("Please login as a hospital to view appointments.");
-    }
-  }, [doctor, fetchAppointments]);
+  fetchAppointments();
+}, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
