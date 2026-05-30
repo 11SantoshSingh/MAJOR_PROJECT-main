@@ -41,7 +41,11 @@ export default function ProfilePage() {
     try {
       setLoading(true);
       
+      const token = localStorage.getItem("token");
       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/my-appointments`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         withCredentials: true,
       });
       if (response.data.appointments) {

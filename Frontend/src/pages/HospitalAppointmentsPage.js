@@ -21,6 +21,7 @@ export default function HospitalAppointmentsPage() {
       const doc = JSON.parse(localStorage.getItem("doctor"));
       return doc;
     } catch (e) {
+      console.error("Failed to parse doctor from localStorage:", e);
       return null;
     }
   })();
@@ -30,6 +31,19 @@ export default function HospitalAppointmentsPage() {
       setLoading(true);
       setError(null);
       const token = localStorage.getItem("token");
+      const apiUrl = process.env.REACT_APP_API_BASE_URL;
+      
+      console.log("=== DEBUG INFO ===");
+      console.log("API URL:", apiUrl);
+      console.log("Token exists:", !!token);
+      console.log("Doctor:", doctor);
+      console.log("Doctor ID:", doctor?.id || doctor?._id);
+      
+      if (!apiUrl) {
+        setError("API URL not configured. Set REACT_APP_API_BASE_URL in .env file.");
+        setLoading(false);
+        return;
+      }
       
       if (!token) {
         setError("No authentication token found. Please login again.");
@@ -37,24 +51,47 @@ export default function HospitalAppointmentsPage() {
         return;
       }
       
-      if (!doctor) {
+      if (!doctor || (!doctor.id && !doctor._id)) {
         setError("Hospital data not found. Please login again.");
         setLoading(false);
         return;
       }
       
-      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/hospital`, {
+      const response = await axios.get(`${apiUrl}/api/appointments/hospital`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      setAppointments(response.data.appointments || []);
+      console.log("API Response:", response.data);
+      
+      if (response.data.appointments && Array.isArray(response.data.appointments)) {
+        setAppointments(response.data.appointments);
+      } else {
+        console.warn("Unexpected response structure:", response.data);
+        setAppointments([]);
+      }
+      
     } catch (err) {
       console.error("Error fetching appointments:", err);
-      setError(err.response?.data?.error || "Failed to fetch appointments");
+      
+      // Better error handling
+      if (err.response?.status === 401) {
+        setError("Session expired. Please login again.");
+        localStorage.removeItem("token");
+        localStorage.removeItem("doctor");
+        navigate("/doctor-register");
+      } else if (err.response?.status === 403) {
+        setError("You don't have permission to view these appointments.");
+      } else if (err.response?.status === 404) {
+        setError("Endpoint not found. Check API configuration.");
+      } else if (err.message === "Network Error") {
+        setError("Cannot connect to server. Make sure backend is running.");
+      } else {
+        setError(err.response?.data?.error || err.message || "Failed to fetch appointments");
+      }
     } finally {
       setLoading(false);
     }
-  },[doctor]);
+  },[doctor, navigate]);
 
   const markAsCompleted = async (appointmentId) => {
     if (!window.confirm("Mark this appointment as completed? Patient will be able to leave a review.")) {

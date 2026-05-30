@@ -217,6 +217,9 @@ export default function BookAppointmentPage() {
       };
 
       const appointmentResponse = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/`, appointmentData, {
+          headers: {
+      Authorization: `Bearer ${token}`
+    },
           withCredentials: true,
       });
 
