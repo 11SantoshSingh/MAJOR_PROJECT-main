@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { 
-  DollarSign, Edit2, Save, X, RefreshCw, 
-  TrendingUp, AlertCircle, CheckCircle, 
-  CreditCard, Plus, Trash2
+import {
+  DollarSign, Edit2, Save, X, RefreshCw,
+  TrendingUp, AlertCircle, CheckCircle,
+  CreditCard
 } from "lucide-react";
 
 export default function PriceManagement() {
@@ -31,7 +31,7 @@ export default function PriceManagement() {
     try {
       setLoading(true);
       setError(null);
-      const token = localStorage.getItem("token");
+      //const token = localStorage.getItem("token");
       const doctorStr = localStorage.getItem("doctor");
       
       if (!doctorStr) {
@@ -79,7 +79,7 @@ export default function PriceManagement() {
         return;
       }
       
-      const response = await axios.post(
+       await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/api/prices`,
         { specialty, charges: parseInt(charges) },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -104,10 +104,7 @@ export default function PriceManagement() {
     return price ? price.charges : null;
   };
 
-  const getSpecialtyIcon = (specialtyName) => {
-    const specialty = specialties.find(s => s.name === specialtyName);
-    return specialty ? specialty.icon : "💊";
-  };
+  
 
   const getSpecialtyColor = (specialtyName) => {
     const specialty = specialties.find(s => s.name === specialtyName);

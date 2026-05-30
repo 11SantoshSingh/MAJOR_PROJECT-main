@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -119,12 +119,12 @@ export default function BookAppointmentPage() {
     return price || 500;
   };
 
-  const getMinimumPrice = (hospitalId) => {
-    const prices = hospitalPrices[hospitalId] || {};
-    const values = Object.values(prices);
-    if (values.length === 0) return 500;
-    return Math.min(...values);
-  };
+  const getMinimumPrice = useCallback((hospitalId) => {
+  const prices = hospitalPrices[hospitalId] || {};
+  const values = Object.values(prices);
+  if (values.length === 0) return 500;
+  return Math.min(...values);
+}, [hospitalPrices]);
 
   useEffect(() => {
     const fetchTakenTimes = async () => {
@@ -174,8 +174,15 @@ export default function BookAppointmentPage() {
       filtered.sort((a, b) => (a.hospitalName || "").localeCompare(b.hospitalName || ""));
     }
     setFilteredHospitals(filtered);
-  }, [searchCity, searchPincode, searchName, sortBy, hospitals, hospitalPrices]);
-
+}, [
+  searchCity,
+  searchPincode,
+  searchName,
+  sortBy,
+  hospitals,
+  hospitalPrices,
+  getMinimumPrice
+]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -198,7 +205,7 @@ export default function BookAppointmentPage() {
 
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
+      //const token = localStorage.getItem("token");
 
       // First create the appointment with pending status
       const appointmentData = {

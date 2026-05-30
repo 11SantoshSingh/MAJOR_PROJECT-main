@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { 
-  User, Mail, Phone, MapPin, 
+   Mail, Phone, MapPin, 
   LogOut, Edit2, Save, X, Calendar, Award, 
-  Shield, CheckCircle, AlertCircle, 
-  Hospital, Star, Clock, FileText, 
-  DollarSign, Activity, Heart, Sparkles, Building
+   CheckCircle, AlertCircle, 
+  Hospital, Star, Sparkles, Building
 } from "lucide-react";
 import PriceManagement from "../components/PriceManagement";
 import ProfilePictureUpload from "../components/ProfilePictureUpload";

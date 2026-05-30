@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  Menu, X, Home, Calendar, User, LogOut,
-  Hospital, Settings, Stethoscope, Heart,
-  FileText, ClipboardList, Activity, Brain,
-  Sparkles, Shield, Star, Search
+  Menu,
+  X,
+  Calendar,
+  User,
+  LogOut,
+  Hospital,
+  Settings,
+  Heart,
+  ClipboardList,
+  Brain
 } from "lucide-react";
 
 export default function Navbar() {

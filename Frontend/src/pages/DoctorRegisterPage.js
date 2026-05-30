@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { 
   Mail, Lock, Phone, Building, MapPin, 
-  CreditCard, User, Eye, EyeOff, 
-  CheckCircle, AlertCircle, Hospital, 
+  CreditCard, Eye, EyeOff, 
+  CheckCircle, AlertCircle, 
   ArrowRight, Sparkles, Shield, Star
 } from "lucide-react";
 
 export default function DoctorRegisterPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  //const [error, setError] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [formError, setFormError] = useState("");
@@ -51,7 +51,7 @@ export default function DoctorRegisterPage() {
 
       try {
         setLoading(true);
-        setError(null);
+        setFormError("");
         const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/doctors/login`, {
           email: formData.email,
           password: formData.password,
@@ -80,7 +80,7 @@ export default function DoctorRegisterPage() {
         setTimeout(() => navigate("/doctor-profile"), 1500);
       } catch (err) {
         setFormError(err.response?.data?.error || err.message || "Login failed");
-        setError(err.response?.data?.error || err.message || null);
+        setFormError(err.response?.data?.error || err.message || "An error occurred");
       } finally {
         setLoading(false);
       }
@@ -112,7 +112,7 @@ export default function DoctorRegisterPage() {
 
       try {
         setLoading(true);
-        setError(null);
+        setFormError("");
         const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/doctors/register`, {
           email: formData.email,
           password: formData.password,
@@ -147,7 +147,7 @@ export default function DoctorRegisterPage() {
         setTimeout(() => navigate("/doctor-profile"), 1500);
       } catch (err) {
         setFormError(err.response?.data?.error || err.message || "Registration failed");
-        setError(err.response?.data?.error || err.message || null);
+        setFormError(err.response?.data?.error || err.message || "An error occurred");
       } finally {
         setLoading(false);
       }

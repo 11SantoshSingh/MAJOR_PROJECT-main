@@ -6,7 +6,7 @@ import {
   LogOut, Plus, Star, CheckCircle, XCircle, 
   RefreshCw, AlertCircle, Hospital, Stethoscope,
   FileText, Edit2, Trash2, Heart,
-  Award, Sparkles, ChevronRight, Activity
+  Award, Sparkles, Activity
 } from "lucide-react";
 import RescheduleModal from "../components/Appointment/RescheduleModal";
 import ReviewModal from "../components/ReviewModal";

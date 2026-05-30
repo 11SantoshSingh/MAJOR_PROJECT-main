@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
-import { Camera, Upload, X, Trash2, Loader2, CheckCircle, AlertCircle, Image as ImageIcon } from "lucide-react";
+import { Camera, Upload, Trash2, Loader2, CheckCircle, AlertCircle, Image as ImageIcon } from "lucide-react";
 
 export default function ProfilePictureUpload({ currentPicture, onUploadSuccess }) {
   const [loading, setLoading] = useState(false);

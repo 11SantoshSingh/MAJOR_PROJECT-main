@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { 
   Calendar, Clock, User, Mail, Phone, 
   CheckCircle, XCircle, RefreshCw, Filter,
   TrendingUp, AlertCircle, Hospital, 
-  Stethoscope, FileText, LogOut, 
-  ChevronRight, Star, Activity
+  Stethoscope, FileText, LogOut, Star, Activity
 } from "lucide-react";
 
 export default function HospitalAppointmentsPage() {
@@ -26,7 +25,7 @@ export default function HospitalAppointmentsPage() {
     }
   })();
 
-  const fetchAppointments = async () => {
+  const fetchAppointments = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -55,7 +54,7 @@ export default function HospitalAppointmentsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  },[doctor]);
 
   const markAsCompleted = async (appointmentId) => {
     if (!window.confirm("Mark this appointment as completed? Patient will be able to leave a review.")) {
@@ -110,7 +109,7 @@ export default function HospitalAppointmentsPage() {
       setLoading(false);
       setError("Please login as a hospital to view appointments.");
     }
-  }, []);
+  }, [doctor, fetchAppointments]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");

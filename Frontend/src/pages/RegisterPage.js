@@ -4,7 +4,7 @@ import axios from "axios";
 import { 
   User, Mail, Lock, Phone, MapPin, Calendar, 
   Eye, EyeOff, CheckCircle, AlertCircle, 
-  Heart, ArrowRight, Sparkles, Shield, Star
+  Heart, ArrowRight, Shield, Star
 } from "lucide-react";
 
 export default function RegisterPage() {
