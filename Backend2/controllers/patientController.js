@@ -1,5 +1,9 @@
 const Patient = require('../models/Patient');
+const Prediction = require('../models/Prediction');
 const { generateToken } = require('../config/jwt');
+const axios = require('axios');
+const FormData = require('form-data');
+const fs = require('fs');
 
 exports.registerPatient = async (req, res) => {
   try {
@@ -19,10 +23,18 @@ exports.registerPatient = async (req, res) => {
 
     const token = generateToken(patient._id, 'patient');
 
+    // Set token as HttpOnly cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     res.status(201).json({
       success: true,
-      message: 'Patient registered successfully',
       token,
+      message: 'Patient registered successfully',
       patient: {
         id: patient._id,
         name: patient.name,
@@ -59,10 +71,18 @@ exports.loginPatient = async (req, res) => {
 
     const token = generateToken(patient._id, 'patient');
 
+    // Set token as HttpOnly cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     res.status(200).json({
       success: true,
-      message: 'Login successful',
       token,
+      message: 'Login successful',
       patient: {
         id: patient._id,
         name: patient.name,
@@ -161,8 +181,60 @@ exports.changePassword = async (req, res) => {
 };
 
 exports.logoutPatient = async (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: 'Logout successful'
-  });
+  // Clear auth cookie
+  try {
+    res.clearCookie('token');
+  } catch (e) {
+    // ignore
+  }
+  res.status(200).json({ success: true, message: 'Logout successful' });
+};
+
+exports.savePrediction = async (req, res) => {
+  try {
+    const { result } = req.body;
+    if (!result) return res.status(400).json({ error: 'No result provided' });
+    const prediction = new Prediction({ patient: req.user.userId, result });
+    await prediction.save();
+    res.status(201).json({ success: true, prediction });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.uploadAndPredict = async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'File upload required' });
+
+    const mlBase = process.env.ML_API_URL || process.env.REACT_APP_ML_API_URL;
+    if (!mlBase) return res.status(500).json({ error: 'ML API URL not configured' });
+
+    const apiKey = process.env.ML_API_KEY || process.env.API_KEY;
+
+    const form = new FormData();
+    form.append('file', fs.createReadStream(req.file.path), { filename: req.file.originalname });
+
+    const headers = form.getHeaders();
+    if (apiKey) headers['x-api-key'] = apiKey;
+
+    const mlResp = await axios.post(`${mlBase}/predict`, form, { headers, maxContentLength: Infinity, maxBodyLength: Infinity });
+    const result = mlResp.data;
+
+    // persist prediction if authenticated
+    try {
+      if (req.user && req.user.userId) {
+        const prediction = new Prediction({ patient: req.user.userId, result });
+        await prediction.save();
+      }
+    } catch (e) {
+      // ignore persistence errors
+    }
+
+    // Optionally remove uploaded file to save disk space
+    try { fs.unlinkSync(req.file.path); } catch (e) {}
+
+    res.status(200).json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };

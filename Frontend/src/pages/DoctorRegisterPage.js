@@ -70,7 +70,8 @@ export default function DoctorRegisterPage() {
             location: response.data.doctor.location,
             city: response.data.doctor.city,
             pincode: response.data.doctor.pincode,
-            licenseNumber: response.data.doctor.licenseNumber
+            licenseNumber: response.data.doctor.licenseNumber,
+            profilePicture: response.data.doctor.profilePicture || ""
           };
           
           localStorage.setItem("doctor", JSON.stringify(doctorData));
@@ -136,7 +137,8 @@ export default function DoctorRegisterPage() {
             location: response.data.doctor.location,
             city: response.data.doctor.city,
             pincode: response.data.doctor.pincode,
-            licenseNumber: response.data.doctor.licenseNumber
+            licenseNumber: response.data.doctor.licenseNumber,
+            profilePicture: response.data.doctor.profilePicture || ""
           };
           
           localStorage.setItem("doctor", JSON.stringify(doctorData));

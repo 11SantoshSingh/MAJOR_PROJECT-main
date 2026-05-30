@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key_here_123456789';
 
+const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '7d';
 
 const generateToken = (userId, userType) => {
   console.log('Generating token for userId:', userId);

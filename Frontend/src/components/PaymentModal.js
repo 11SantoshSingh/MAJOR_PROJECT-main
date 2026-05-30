@@ -20,7 +20,7 @@ function PaymentModal({ appointment, amount, onClose, onSuccess }) {
     try {
       setLoading(true);
       setError(null);
-      const token = localStorage.getItem('token');
+      
 
       // Create Razorpay order
       const orderResponse = await axios.post(
@@ -29,7 +29,7 @@ function PaymentModal({ appointment, amount, onClose, onSuccess }) {
           appointmentId: appointment._id,
           amount: amount
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { withCredentials: true  }
       );
 
       const { orderId, keyId } = orderResponse.data;
@@ -60,7 +60,7 @@ function PaymentModal({ appointment, amount, onClose, onSuccess }) {
                 signature: response.razorpay_signature,
                 appointmentId: appointment._id
               },
-              { headers: { Authorization: `Bearer ${token}` } }
+              { withCredentials: true }
             );
 
             if (verifyResponse.data.success) {
@@ -93,7 +93,7 @@ function PaymentModal({ appointment, amount, onClose, onSuccess }) {
     try {
       setLoading(true);
       setError(null);
-      const token = localStorage.getItem('token');
+      
 
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/api/payments/cash-payment`,
@@ -101,7 +101,7 @@ function PaymentModal({ appointment, amount, onClose, onSuccess }) {
           appointmentId: appointment._id,
           amount: amount
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { withCredentials: true }
       );
 
       if (response.data.success) {

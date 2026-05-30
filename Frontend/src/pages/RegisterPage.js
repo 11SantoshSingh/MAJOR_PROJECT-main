@@ -27,24 +27,46 @@ export default function RegisterPage() {
   const navigate = useNavigate();
 
   const registerPatient = async (userData) => {
-    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/patients/register`, userData);
-    if (response.data.token) {
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("userType", "patient");
-      localStorage.setItem("user", JSON.stringify(response.data.patient));
+  const response = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/api/patients/register`,
+    userData,
+    {
+      withCredentials: true,
     }
-    return response.data;
-  };
+  );
+
+  if (response.data.token) {
+  localStorage.setItem("token", response.data.token);
+}
+
+if (response.data.patient) {
+  localStorage.setItem("userType", "patient");
+  localStorage.setItem("user", JSON.stringify(response.data.patient));
+}
+
+  return response.data;
+};
 
   const loginPatient = async (email, password) => {
-    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/patients/login`, { email, password });
-    if (response.data.token) {
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("userType", "patient");
-      localStorage.setItem("user", JSON.stringify(response.data.patient));
+  const response = await axios.post(
+    `${process.env.REACT_APP_API_BASE_URL}/api/patients/login`,
+    { email, password },
+    {
+      withCredentials: true,
     }
-    return response.data;
-  };
+  );
+
+  if (response.data.token) {
+  localStorage.setItem("token", response.data.token);
+}
+
+if (response.data.patient) {
+  localStorage.setItem("userType", "patient");
+  localStorage.setItem("user", JSON.stringify(response.data.patient));
+}
+
+  return response.data;
+};
 
   const handleChange = (e) => {
     const { name, value } = e.target;

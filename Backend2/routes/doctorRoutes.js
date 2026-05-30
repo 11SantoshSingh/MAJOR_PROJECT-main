@@ -7,6 +7,7 @@ const router = express.Router();
 // Public routes
 router.post('/register', doctorController.registerDoctor);
 router.post('/login', doctorController.loginDoctor);
+router.post('/logout', doctorController.logoutDoctor);
 router.get('/', doctorController.getAllDoctors);
 
 // Protected routes

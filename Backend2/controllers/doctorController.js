@@ -14,7 +14,9 @@ exports.loginDoctor = async (req, res) => {
       });
     }
 
+    console.log("Login Email:", email);
     const doctor = await Doctor.findOne({ email }).select('+password');
+    console.log("Doctor Found:", doctor);
     if (!doctor) {
       return res.status(401).json({
         success: false,
@@ -23,6 +25,7 @@ exports.loginDoctor = async (req, res) => {
     }
 
     const isPasswordCorrect = await doctor.matchPassword(password);
+    console.log("Password Match:", isPasswordCorrect);
     if (!isPasswordCorrect) {
       return res.status(401).json({
         success: false,
@@ -33,6 +36,14 @@ exports.loginDoctor = async (req, res) => {
     console.log('Doctor logged in, ID:', doctor._id.toString());
 
     const token = generateToken(doctor._id.toString(), 'doctor');
+
+    // Set token as HttpOnly cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     res.status(200).json({
       success: true,
@@ -90,9 +101,18 @@ exports.registerDoctor = async (req, res) => {
       profilePicture: ''
     });
 
+    console.log("Saved Doctor:", doctor);
     console.log('Doctor registered, ID:', doctor._id.toString());
 
     const token = generateToken(doctor._id.toString(), 'doctor');
+
+    // Set token as HttpOnly cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     res.status(201).json({
       success: true,
@@ -137,6 +157,7 @@ exports.getDoctorProfile = async (req, res) => {
     }
     res.status(200).json({
       success: true,
+      token,
       doctor: {
         id: doctor._id,
         email: doctor.email,
@@ -182,6 +203,7 @@ exports.updateDoctorProfile = async (req, res) => {
     
     res.status(200).json({
       success: true,
+      
       doctor: {
         id: doctor._id,
         email: doctor.email,
@@ -197,6 +219,13 @@ exports.updateDoctorProfile = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+exports.logoutDoctor = async (req, res) => {
+  try {
+    res.clearCookie('token');
+  } catch (e) {}
+  res.status(200).json({ success: true, message: 'Logout successful' });
 };
 
 // ========== NEW PROFILE PICTURE FUNCTIONS ==========

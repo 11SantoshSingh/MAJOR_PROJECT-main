@@ -40,9 +40,9 @@ export default function ProfilePage() {
   const fetchAppointments = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
+      
       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/my-appointments`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        withCredentials: true,
       });
       if (response.data.appointments) {
         const appointmentsWithReviewStatus = await Promise.all(
@@ -51,7 +51,7 @@ export default function ProfilePage() {
               const reviewResponse = await axios.get(
                 `${process.env.REACT_APP_API_BASE_URL}/api/reviews/appointment/${apt._id}`,
                 {
-                  headers: token ? { Authorization: `Bearer ${token}` } : {},
+                  withCredentials: true,
                 }
               );
               return { ...apt, hasReview: reviewResponse.data.exists };
@@ -72,9 +72,9 @@ export default function ProfilePage() {
   const cancelAppointment = async (appointmentId) => {
     try {
       setCancelLoading(appointmentId);
-      const token = localStorage.getItem("token");
+      
       await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/${appointmentId}/cancel`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        withCredentials: true,
       });
       setAppointments((prev) => prev.filter((apt) => apt.id !== appointmentId));
     } catch (err) {
@@ -86,9 +86,9 @@ export default function ProfilePage() {
 
   const rescheduleAppointment = async (appointmentId, date, time) => {
     try {
-      const token = localStorage.getItem("token");
+      
       await axios.put(`${process.env.REACT_APP_API_BASE_URL}/api/appointments/${appointmentId}/reschedule`, { date, time }, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        withCredentials: true,
       });
       setAppointments((prev) => prev.map((apt) => (apt.id === appointmentId ? { ...apt, date, time, status: "rescheduled" } : apt)));
       return true;

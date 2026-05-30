@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { 
-  Menu, X, Home, Calendar, User, LogOut, 
-  Hospital, Settings, Stethoscope, Heart, 
+import {
+  Menu, X, Home, Calendar, User, LogOut,
+  Hospital, Settings, Stethoscope, Heart,
   FileText, ClipboardList, Activity, Brain,
-  Sparkles, Shield, Star
+  Sparkles, Shield, Star, Search
 } from "lucide-react";
 
 export default function Navbar() {
@@ -36,18 +36,27 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const handleStorageChange = () => {
+    const checkAuth = () => {
       try {
-        setUser(JSON.parse(localStorage.getItem("user")));
-        setDoctor(JSON.parse(localStorage.getItem("doctor")));
-      } catch (e) {
+        const userData = localStorage.getItem("user");
+        const doctorData = localStorage.getItem("doctor");
+
+        setUser(userData ? JSON.parse(userData) : null);
+        setDoctor(doctorData ? JSON.parse(doctorData) : null);
+      } catch (error) {
         setUser(null);
         setDoctor(null);
       }
     };
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
+
+    checkAuth();
+
+    window.addEventListener("storage", checkAuth);
+
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+    };
+  }, [location.pathname]);
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -64,8 +73,8 @@ export default function Navbar() {
 
   const navLinkClass = (path) => `
     relative font-medium transition-all duration-300 py-2 px-3 rounded-xl
-    ${isActive(path) 
-      ? "text-blue-600 bg-blue-50" 
+    ${isActive(path)
+      ? "text-blue-600 bg-blue-50"
       : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
     }
   `;
@@ -77,19 +86,19 @@ export default function Navbar() {
     <>
       {/* Spacer to prevent content from going under fixed navbar */}
       <div className="h-16"></div>
-      
+
       <nav className={`
         fixed top-0 left-0 right-0 z-50 transition-all duration-300
-        ${scrolled 
-          ? "bg-white/95 backdrop-blur-md shadow-lg" 
+        ${scrolled
+          ? "bg-white/95 backdrop-blur-md shadow-lg"
           : "bg-white shadow-md"
         }
       `}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="flex items-center gap-2 group transition-transform duration-300 hover:scale-105"
             >
               <div className="relative">
@@ -113,11 +122,10 @@ export default function Navbar() {
 
               {isPatient ? (
                 <>
-                
                   <Link to="/book-appointment" className={navLinkClass("/book-appointment")}>
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
-                      <span>Book</span>
+                      <span>Book Appointment</span>
                     </div>
                   </Link>
                   <Link to="/profile" className={navLinkClass("/profile")}>
@@ -197,8 +205,8 @@ export default function Navbar() {
           ${mobileMenuOpen ? "top-16 opacity-100 visible" : "-top-full opacity-0 invisible"}
         `}>
           <div className="px-4 pt-4 pb-6 space-y-2 max-h-[calc(100vh-4rem)] overflow-y-auto">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 font-medium"
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -208,24 +216,24 @@ export default function Navbar() {
 
             {isPatient ? (
               <>
-                <Link 
-                  to="/book-appointment" 
+                <Link
+                  to="/book-appointment"
                   className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <Calendar className="w-5 h-5 text-green-600" />
                   <span>Book Appointment</span>
                 </Link>
-                <Link 
-                  to="/profile" 
+                <Link
+                  to="/profile"
                   className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <User className="w-5 h-5 text-purple-600" />
                   <span>My Profile</span>
                 </Link>
-                <button 
-                  onClick={logout} 
+                <button
+                  onClick={logout}
                   className="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium transition-all duration-200"
                 >
                   <LogOut className="w-5 h-5" />
@@ -234,24 +242,22 @@ export default function Navbar() {
               </>
             ) : isHospital ? (
               <>
-                <Link 
-                  to="/hospital-appointments" 
+                <Link
+                  to="/hospital-appointments"
                   className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <ClipboardList className="w-5 h-5 text-blue-600" />
                   <span>Appointments</span>
                 </Link>
-                <Link 
-                  to="/doctor-profile" 
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 font-medium"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Settings className="w-5 h-5 text-gray-600" />
-                  <span>Profile</span>
+                <Link to="/doctor-profile" className={navLinkClass("/doctor-profile")}>
+                  <div className="flex items-center gap-2">
+                    <Hospital className="w-4 h-4" />
+                    <span>Hospital Profile</span>
+                  </div>
                 </Link>
-                <button 
-                  onClick={logout} 
+                <button
+                  onClick={logout}
                   className="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium transition-all duration-200"
                 >
                   <LogOut className="w-5 h-5" />
