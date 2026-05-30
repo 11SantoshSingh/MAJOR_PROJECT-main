@@ -205,7 +205,7 @@ export default function BookAppointmentPage() {
 
     try {
       setLoading(true);
-      //const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
       // First create the appointment with pending status
       const appointmentData = {
