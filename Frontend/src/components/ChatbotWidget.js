@@ -10,7 +10,7 @@ const ChatbotWidget = () => {
 
     const userMessage = { sender: "user", text: input };
     setMessages((prev) => [...prev, userMessage]);
-
+    
     const response = await fetch("http://127.0.0.1:8080/get", {
       method: "POST",
       headers: {

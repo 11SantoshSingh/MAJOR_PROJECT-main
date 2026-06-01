@@ -24,7 +24,7 @@ export default function HospitalAppointmentsPage() {
       console.error("Failed to parse doctor from localStorage:", e);
       return null;
     }
-  })();
+  });
 
   const fetchAppointments = useCallback(async () => {
     try {
@@ -141,7 +141,7 @@ export default function HospitalAppointmentsPage() {
 
   useEffect(() => {
   fetchAppointments();
-}, []);
+}, [fetchAppointments]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
