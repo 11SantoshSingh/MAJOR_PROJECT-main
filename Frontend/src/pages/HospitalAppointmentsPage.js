@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { 
@@ -16,15 +16,14 @@ export default function HospitalAppointmentsPage() {
   const [filterStatus, setFilterStatus] = useState("all");
   const navigate = useNavigate();
   
-  const doctor = (() => {
+  const doctor = useMemo(() => {
     try {
-      const doc = JSON.parse(localStorage.getItem("doctor"));
-      return doc;
+      return JSON.parse(localStorage.getItem("doctor"));
     } catch (e) {
       console.error("Failed to parse doctor from localStorage:", e);
       return null;
     }
-  });
+  }, []);
 
   const fetchAppointments = useCallback(async () => {
     try {
